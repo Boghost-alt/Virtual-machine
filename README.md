@@ -1,5 +1,3 @@
-#DEMO 2
+# Virtual Machine
 
-Some text
-
-## Local development
+Trying to create a virtual machine, following Tsoding and Cobb coding tutorial.
