@@ -2,11 +2,10 @@ CC = clang
 EXEC = main
 SRC = main.c
 
-all : $(EXEC)
+all: $(EXEC)
 
-$(EXEC) : $(SRC)
-	CC $(SRC) -o $(EXEC)
-
+$(EXEC): $(SRC)
+	$(CC) -o $(EXEC) $(SRC)
 
 clean:
 	rm -f $(EXEC)

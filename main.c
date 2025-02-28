@@ -1,4 +1,3 @@
-#include <math.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
@@ -28,7 +27,7 @@ typedef struct{
     Inst_set type;
 }Inst;
 
-Inst parse_int(char *line);
+Inst parse_inst(char *line);
 
 int stack[MAX_STACK_SIZE] = {0,};
 int stack_size = 0;
@@ -147,9 +146,15 @@ void print_register(char* reg)
 
 }
 
-int main()
+int main(int argc, char** argv)
 {
-    FILE *fp = fopen("inst.txt", "r");
+    if(argc < 2)
+    {
+        printf("Incorrect usage, expected : ./main \"file.txt\"");
+        exit(1);
+    }
+    
+    FILE *fp = fopen(argv[1], "r");
     if(fp==NULL)
     {
         fprintf(stderr, "ERROR : Unable to open file");
