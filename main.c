@@ -1,3 +1,5 @@
+#include <math.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -25,6 +27,8 @@ typedef struct{
     int value;
     Inst_set type;
 }Inst;
+
+Inst parse_int(char *line);
 
 int stack[MAX_STACK_SIZE] = {0,};
 int stack_size = 0;
@@ -106,7 +110,8 @@ void mov(int val, const char* reg)
         if(c_size < MAX_REG_SIZE)
             cx[c_size++] = val;
         else
-
+            printf("ERROR: cx register overflow!\n");
+    }
     else if(strcmp(reg, "stack") == 0)
     {
         if(stack_size < MAX_STACK_SIZE)
@@ -144,91 +149,110 @@ void print_register(char* reg)
 
 int main()
 {
+    FILE *fp = fopen("inst.txt", "r");
+    if(fp==NULL)
+    {
+        fprintf(stderr, "ERROR : Unable to open file");
+        exit(1);
+    }
     stack_size = 0; // Explicit initialization
 
     int a, b;
-    for(int i = 0; i < PROGRAM_SIZE; i++)  // Fix loop condition
+    char buff[BUFSIZ];
+    
+    while(fgets(buff, BUFSIZ, fp) != NULL)
     {
-        switch(instructions[i].type)
+        size_t len = strlen(buff);
+        if(buff[len-1] == '\n')
+            buff[len-1] = '\0';
+        
+        Inst inst = parse_inst(buff);
+        switch(inst.type)
         {
             case Inst_PUSH:
-                push(instructions[i].value, instructions[i].reg);
+                push(inst.value, inst.reg);
                 break;
             case Inst_POP:
-                a = pop(instructions[i].reg);
+                a = pop(inst.reg);
                 break;
             case Inst_ADD:
-                a = pop(instructions[i].reg);
-                b = pop(instructions[i].reg);
-                push(a + b, instructions[i].reg);
+                a = pop(inst.reg);
+                b = pop(inst.reg);
+                push(a + b, inst.reg);
                 break;
             case Inst_SUB:
-                a = pop(instructions[i].reg);
-                b = pop(instructions[i].reg);   
-                push(a-b,instructions[i].reg);
+                a = pop(inst.reg);
+                b = pop(inst.reg);   
+                push(a-b,inst.reg);
                 break;
             case Inst_MOV:
-                mov(instructions[i].value, instructions[i].reg);
+                mov(inst.value, inst.reg);
                 break;
                 
         }
     }
+
     print_register("ax");
     print_register("bx");
     print_register("cx");
     print_register("stack");
+    
+    fclose(fp);
+    
     return 0;
 }
 
-Inst read(char* filePath, int targetLine)
+Inst parse_int(char *line)
 {
-    FILE* fp = fopen(filePath, "r");
-    char buff1[BUFSIZ], buff2[BUFSIZ];
-    size_t currentLine = 0;
-    Inst instruction;
-    size_t i, j;
+    Inst inst;
+    char buff[BUFSIZ];
+    size_t i;
     
-    while(fgets(buff1, sizeof(buff1), fp))
-    {
-        currentLine++;
-        if(currentLine == targetLine)
-        {
-            while(buff1[i] !=' ' && buff1[i] != '\0')
-            {
-                buff2[j++] = buff1[i++];
-            }
-            if(strcmp(buff2, "PUSH"))
-                instruction.type = Inst_PUSH;
-            else if(strcmp(buff2, "POP"))
-                instruction.type = Inst_POP;
-            else if(strcmp(buff2, "ADD"))
-                instruction.type = Inst_ADD;
-            else if(strcmp(buff2, "SUB"))
-                instruction.type = Inst_SUB;
-            else if(strcmp(buff2, "MOV"))
-                instruction.type = Inst_MOV;
-            j=0;
-            memset(buff2, 0, BUFSIZ);
-            skipspace(buff1, &i);
-            while(buff1[i] != ' ' && buff1[i] != '\0')
-                buff2[j++] = buff1[i++];
-            instruction.value = atoi(buff2);
-            j=0;
-            memset(buff2, 0, BUFSIZ);
-            skipspace(buff1, &i);
-            while(buff1[i] != ' ' && buff1[i] != '\0')
-                buff2[j++] = buff1[i++];
-            if(strcmp(buff2, ""))
-                instruction.reg = "stack";
-            else if(strcmp(buff2, "ax"))
-                instruction.reg = "ax";
-            else if(strcmp(buff2, "bx"))
-                instruction.reg = "bx";
-            else if(strcmp(buff2, "cx"))
-                instruction.reg = "cx";
-        }
-    }
+    skipspace(line, &i);
     
-    return instruction;
+    size_t j=0;
+    while(line[i] != ' ' && line[i] != '\0')
+        buff[j++] = line[i++];
+    buff[j] = '\0';
+    
+
+    if(strcmp(buff, "PUSH"))
+        inst.type = Inst_PUSH;
+    else if(strcmp(buff, "POP"))
+        inst.type = Inst_POP;
+    else if(strcmp(buff, "ADD"))
+        inst.type = Inst_ADD;
+    else if(strcmp(buff, "SUB"))
+        inst.type = Inst_SUB;
+    else if(strcmp(buff, "MOV"))
+        inst.type = Inst_MOV;
+
+    skipspace(line, &i);
+    j=0;
+    while(line[i] != '\0')
+        buff[j++] = line[i++];
+    buff[j] = '\0';
+    
+    if(inst.type == Inst_PUSH)
+        inst.value = atoi(buff);
+    else
+        inst.value = 0;
+    
+    skipspace(line, &i);
+    j=0;
+    while(line[i] != '\0')
+        buff[j++] = line[i++];
+    buff[j] = '\0';
+    
+    if(strcmp(buff, ""))
+        inst.reg = "stack";
+    else if(strcmp(buff, "ax"))
+        inst.reg = "ax";
+    else if(strcmp(buff, "bx"))
+        inst.reg = "bx";
+    else if(strcmp(buff, "cx"))
+        inst.reg = "cx";
+    
+    return inst;
 }
 
