@@ -1,0 +1,4 @@
+PUSH 15
+PUSH 12
+ADD
+MOV 13 ax
