@@ -1,0 +1,22 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     main
+relocations:
+  - { offset: 0x26, size: 0x8, addend: 0x0, symName: _skipspace, symObjAddr: 0x0, symBinAddr: 0x100003028, symSize: 0x48 }
+  - { offset: 0x3F, size: 0x8, addend: 0x0, symName: _stack, symObjAddr: 0x27FC, symBinAddr: 0x100008070, symSize: 0x0 }
+  - { offset: 0x6F, size: 0x8, addend: 0x0, symName: _stack_size, symObjAddr: 0x67FC, symBinAddr: 0x10000C070, symSize: 0x0 }
+  - { offset: 0x84, size: 0x8, addend: 0x0, symName: _ax, symObjAddr: 0x6800, symBinAddr: 0x10000C074, symSize: 0x0 }
+  - { offset: 0x99, size: 0x8, addend: 0x0, symName: _a_size, symObjAddr: 0xA800, symBinAddr: 0x100010074, symSize: 0x0 }
+  - { offset: 0xAE, size: 0x8, addend: 0x0, symName: _bx, symObjAddr: 0xA804, symBinAddr: 0x100010078, symSize: 0x0 }
+  - { offset: 0xC3, size: 0x8, addend: 0x0, symName: _b_size, symObjAddr: 0xE804, symBinAddr: 0x100014078, symSize: 0x0 }
+  - { offset: 0xD8, size: 0x8, addend: 0x0, symName: _cx, symObjAddr: 0xE808, symBinAddr: 0x10001407C, symSize: 0x0 }
+  - { offset: 0xED, size: 0x8, addend: 0x0, symName: _c_size, symObjAddr: 0x12808, symBinAddr: 0x10001807C, symSize: 0x0 }
+  - { offset: 0x109, size: 0x8, addend: 0x0, symName: _instructions, symObjAddr: 0xEF8, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offset: 0x196, size: 0x8, addend: 0x0, symName: _skipspace, symObjAddr: 0x0, symBinAddr: 0x100003028, symSize: 0x48 }
+  - { offset: 0x1C8, size: 0x8, addend: 0x0, symName: _push, symObjAddr: 0x48, symBinAddr: 0x100003070, symSize: 0x18C }
+  - { offset: 0x1FA, size: 0x8, addend: 0x0, symName: _pop, symObjAddr: 0x1D4, symBinAddr: 0x1000031FC, symSize: 0x174 }
+  - { offset: 0x222, size: 0x8, addend: 0x0, symName: _mov, symObjAddr: 0x348, symBinAddr: 0x100003370, symSize: 0x1CC }
+  - { offset: 0x254, size: 0x8, addend: 0x0, symName: _print_register, symObjAddr: 0x514, symBinAddr: 0x10000353C, symSize: 0x228 }
+  - { offset: 0x2E8, size: 0x8, addend: 0x0, symName: _parse_inst, symObjAddr: 0x73C, symBinAddr: 0x100003764, symSize: 0x3FC }
+  - { offset: 0x349, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0xB38, symBinAddr: 0x100003B60, symSize: 0x254 }
+...

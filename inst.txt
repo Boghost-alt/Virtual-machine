@@ -2,3 +2,7 @@ PUSH 15
 PUSH 12
 ADD
 MOV 13 ax
+MOV 17 ax
+MOV 3
+ADD
+ADD ax

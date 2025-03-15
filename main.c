@@ -175,7 +175,7 @@ Inst parse_inst(char *line)
         exit(1);
     }
 
-    skipspace(line, &i); // Skip space after instruction
+    skipspace(line, &i); 
 
     j = 0;
     while(line[i] != ' ' && line[i] != '\0') {
@@ -188,7 +188,7 @@ Inst parse_inst(char *line)
     else
         inst.value = 0;
 
-    skipspace(line, &i); // Skip space after value
+    skipspace(line, &i);
 
     j = 0;
     while(line[i] != '\0') {
